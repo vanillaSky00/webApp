@@ -1,0 +1,36 @@
+{
+  "runs": [
+  {
+    "id": 1,
+    "title": "Noon Run",
+    "startedOn": "2025-03-12T21:59:44.819949",
+    "completedOn": "2025-03-12T22:59:44.819958",
+    "miles": 5,
+    "location": "OUTDOOR"
+  },
+  {
+    "id": 2,
+    "title": "Afternoon Run",
+    "startedOn": "2025-03-12T21:59:44.819949",
+    "completedOn": "2025-03-12T22:59:44.819958",
+    "miles": 5,
+    "location": "OUTDOOR"
+  },
+  {
+    "id": 3,
+    "title": "Dawn Run",
+    "startedOn": "2025-03-12T21:59:44.819949",
+    "completedOn": "2025-03-12T22:59:44.819958",
+    "miles": 5,
+    "location": "OUTDOOR"
+  },
+  {
+    "id": 4,
+    "title": "Sunset Run",
+    "startedOn": "2025-03-12T21:59:44.819949",
+    "completedOn": "2025-03-12T22:59:44.819958",
+    "miles": 5,
+    "location": "OUTDOOR"
+  }
+]
+}
