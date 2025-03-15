@@ -3,10 +3,7 @@ package com.vanillasky.springbootquickstart.run;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.lang.module.ResolutionException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,20 +39,26 @@ public class RunController {
     @PostMapping("")
     void create(@Valid @RequestBody Run run) {
         //@valid helps us sanitized things
-        runRepository.create(run);
+        runRepository.save(run);//save instead of creat
     }
 
     //put
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{id}")
     void update(@RequestBody Run run, @PathVariable Integer id) {
-        runRepository.update(run, id);
+        runRepository.save(run);//save instead of update
+        //does not distinguish between insert and update.
     }
 
     //delete
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     void delete(@PathVariable Integer id){
-        runRepository.delete(id);
+        runRepository.delete(runRepository.findById(id).get());
+    }
+
+    @GetMapping("/location/{location}")
+    List<Run> findAllByLocation(@PathVariable String location) {
+        return runRepository.findAllByLocation(location);
     }
 }

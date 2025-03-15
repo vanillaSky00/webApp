@@ -2,13 +2,22 @@ server:
   port: 9191
   servlet:
     context-path: /start2
-spring:
 #for security issue the h2-console is false by default
-#it can help manage data base via an UI
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-  datasource:
-    generate-unique-name: false
-    name: vanilla
+#it can help manage database via a UI
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2-console
+#  datasource:
+#    generate-unique-name: false
+#    name: vanilla
+
+#  datasource:
+#    name: vanilla
+#    url: jdbc:postgresql://localhost:5432/vanilla
+#    username:
+#    password:
+spring:
+  sql:
+    init:
+      mode: always
