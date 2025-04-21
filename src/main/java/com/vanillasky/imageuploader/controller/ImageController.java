@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/home/images")
@@ -49,4 +50,12 @@ public class ImageController {
                 .contentType(MediaType.valueOf("image/png"))
                 .body(imageData);
     }
+
+    @GetMapping("/fileSystem/list")
+    public ResponseEntity<?> listAllImages() {
+        List<String> fileNames = service.loadAllImageFileNames(); // Implement this
+        return ResponseEntity.ok(fileNames);
+    }
+
+
 }
