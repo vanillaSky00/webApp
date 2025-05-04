@@ -1,12 +1,22 @@
 <template>
-  <ImageUpload />
+  <div class="header">
+    <ConnectWallet />
+  </div>
+
+  <div class="main">
+    <ImageUpload />
+  </div>
 </template>
 
-<script>
-import ImageUpload from './components/ImageUpload.vue';
-export default {
-  components: {
-    ImageUpload,
-  },
-};
+<style scoped>
+.header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+}
+</style>
+
+<script setup>
+import ImageUpload from './components/ImageUpload.vue'
+import ConnectWallet from './components/ConnectWallet.vue'
 </script>
