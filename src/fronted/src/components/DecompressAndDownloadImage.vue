@@ -7,7 +7,7 @@
   >
     <slot>
       <!-- default button label -->
-      {{ busy ? 'Uploading…' : 'Upload & Download' }}
+      {{ busy ? 'Uploading…' : 'Decompress' }}
     </slot>
     <input
         ref="hiddenInput"
@@ -23,10 +23,9 @@
 import { ref } from 'vue'
 import axios from 'axios'
 
-/* ---- props ---- */
-defineProps({
+const props = defineProps({
   /** compress | decompress (default compress) */
-  op: { type: String, default: 'compress' },
+  op: { type: String, default: 'decompress' },
   /** override backend URL if needed */
   url: { type: String, default: '/api/home/images/process' }
 })

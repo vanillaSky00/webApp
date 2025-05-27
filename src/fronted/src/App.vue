@@ -6,6 +6,14 @@
   <div class="main">
     <ImageUpload />
   </div>
+
+  <div class="main">
+    <CompressAndDownloadImage />
+  </div>
+
+  <div class="main">
+    <DecompressAndDownloadImage />
+  </div>
 </template>
 
 <style scoped>
@@ -19,5 +27,6 @@
 <script setup>
 import ImageUpload from './components/ImageUpload.vue'
 import ConnectWallet from './components/ConnectWallet.vue'
-import ImageUploadButton from './components/processAndDownloadImage.vue'
+import CompressAndDownloadImage from './components/CompressAndDownloadImage.vue'
+import DecompressAndDownloadImage from "@/components/DecompressAndDownloadImage.vue";
 </script>
