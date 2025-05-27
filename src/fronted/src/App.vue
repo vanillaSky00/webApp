@@ -19,4 +19,5 @@
 <script setup>
 import ImageUpload from './components/ImageUpload.vue'
 import ConnectWallet from './components/ConnectWallet.vue'
+import ImageUploadButton from './components/processAndDownloadImage.vue'
 </script>

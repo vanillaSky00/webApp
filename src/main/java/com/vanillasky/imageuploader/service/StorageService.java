@@ -2,13 +2,18 @@ package com.vanillasky.imageuploader.service;
 
 import com.vanillasky.imageuploader.entity.FileData;
 import com.vanillasky.imageuploader.entity.ImageData;
-import com.vanillasky.imageuploader.model.image.ImageUtils;
+import com.vanillasky.imageuploader.model.image.ImageProcessingService;
 import com.vanillasky.imageuploader.repository.FileDataRepository;
 import com.vanillasky.imageuploader.repository.StorageRepository;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.core.io.InputStreamResource;
+
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,6 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -25,10 +31,14 @@ public class StorageService {
 
     private final StorageRepository repository;
     private final FileDataRepository fileDataRepository;
+    private final ImageProcessingService imageProcessingService;
 
-    public StorageService(StorageRepository repository, FileDataRepository fileDataRepository) {
+    public StorageService(StorageRepository repository,
+                          FileDataRepository fileDataRepository,
+                          ImageProcessingService imageProcessingService) {
         this.repository = repository;
         this.fileDataRepository = fileDataRepository;
+        this.imageProcessingService = imageProcessingService;
     }
 
     private final String FOLDER_PATH = "/Users/harris/uploads/";
@@ -40,7 +50,8 @@ public class StorageService {
         ImageData imageData = repository.save(ImageData.builder()
                 .name(file.getOriginalFilename())
                 .type(file.getContentType())
-                .imageData(ImageUtils.compressImage(file.getBytes())).build());
+                .imageData(imageProcessingService.apply("compress", file.getBytes())).build());
+                //.imageData(CompressionProcessor.compressImage(file.getBytes())).build());
 
         if(imageData != null) {
             return "file uploaded successfully" +  imageData.getName();
@@ -50,7 +61,8 @@ public class StorageService {
 
     public byte[] downloadImage(String fileName) {
         Optional<ImageData> dbImageData = repository.findByName(fileName);
-        byte[] images = ImageUtils.decompressImage(dbImageData.get().getImageData());
+        //byte[] images = CompressionProcessor.decompressImage(dbImageData.get().getImageData());
+        byte[] images = imageProcessingService.apply("decompress", dbImageData.get().getImageData());
         return images;
     }
 
@@ -100,6 +112,38 @@ public class StorageService {
         } catch (IOException e) {
             throw new RuntimeException("Could not list files", e);
         }
+    }
+
+
+    public ResponseEntity<?> handleOneShot(MultipartFile source, String op) throws IOException {
+        System.out.println("In handleOneShot");
+        //save upload to a JVM temp file
+        File tempInput = File.createTempFile("upload-", ".bin");
+        source.transferTo(tempInput);
+
+        //run the requested algorithm to process the img
+        byte[] result = imageProcessingService.apply(op, Files.readAllBytes(tempInput.toPath()));
+
+        //wrap bytes in a stream for zero-copy transfer
+        InputStreamResource body =
+                new InputStreamResource(new ByteArrayInputStream(result));
+
+        //build HTTP response
+        ResponseEntity<InputStreamResource> resp = ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"" + UUID.randomUUID() + ".png\"")
+                .contentLength(result.length)
+                .contentType(MediaType.IMAGE_PNG)
+                .body(body);
+        System.out.println("End handleOneShot");
+        //async cleanup
+        //new Thread(tempInput::delete).start();
+        new Thread(() -> {
+            tempInput.delete();
+            System.out.println("async cleanup");
+        }).start();
+
+        return resp;
     }
 
 }

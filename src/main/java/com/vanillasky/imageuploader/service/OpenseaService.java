@@ -11,10 +11,11 @@ public class OpenseaService {
     }
 
     public String getAssets(String ownerAddress){
-        String url = UriComponentsBuilder.fromUriString(baseUrl)
-                .queryParam("", "")
-                .build()
-                .toUriString();
+//        String url = UriComponentsBuilder.fromUriString(baseUrl)
+//                .queryParam("", "")
+//                .build()
+//                .toUriString();
+        return "hello in getAssets";
     }
 }
 
