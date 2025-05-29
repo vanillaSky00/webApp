@@ -12,7 +12,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, PropType } from 'vue';
+import { ref, computed} from 'vue';
+import type { PropType } from 'vue';
 import axios from 'axios';
 
 interface BackendSuccessResponse {

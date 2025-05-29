@@ -114,7 +114,8 @@ function handleChangeView(item: { name: string, path: string }) {
   定義了導航列表 (ul.header-nav) 和列表項 (li) 的佈局、外觀、交互效果 (hover, active)。
 */
 
-@import "../assets/css/var.scss"; // 導入 SCSS 變量
+@use "../assets/css/var.scss" as *;
+//@import "../assets/css/var.scss"; // 導入 SCSS 變量
 
 /*
   .header-nav (ul 元素) 的樣式。

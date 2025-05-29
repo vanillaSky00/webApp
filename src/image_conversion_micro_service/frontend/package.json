@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@studio-freight/lenis": "^1.0.42",
+    "axios": "^1.9.0",
     "frontend": "file:",
     "gsap": "^3.13.0",
     "pinia": "^3.0.1",
