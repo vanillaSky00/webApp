@@ -1,0 +1,127 @@
+/* 
+  src/assets/animations.css
+  --------------------------
+  該文件定義了一系列用於實現元素滾動進入視口時觸發的動畫效果的 CSS 類。
+  這些動畫通常與 JavaScript (例如使用 IntersectionObserver) 配合使用。
+  當 JavaScript 檢測到帶有特定動畫類的元素進入視口時，會為該元素添加一個 'is-visible' 類，
+  從而觸發在 '.is-visible' 狀態下定義的 CSS 過渡動畫。
+
+  基本用法：
+  1. 在 HTML 元素上添加 'animate-on-scroll' 基礎類和一個具體的動畫效果類 (例如 'animate-fade-in-up')。
+     <div class="animate-on-scroll animate-fade-in-up">...</div>
+  2. 使用 JavaScript (如 intersectionObserver.js) 監聽這些元素。
+  3. 當元素進入視口時，JavaScript 為其添加 'is-visible' class。
+     <div class="animate-on-scroll animate-fade-in-up is-visible">...</div>
+     此時，定義在 '.animate-fade-in-up.is-visible' 中的樣式將通過 transition 生效。
+*/
+
+/* 
+  通用基礎設置
+  -----------------
+  .animate-on-scroll: 
+  - 這是所有希望應用滾動動畫的元素的基礎類。
+  - 初始狀態：元素完全透明 (opacity: 0)。
+  - 過渡效果：為 `opacity` 和 `transform` 屬性定義了默認的過渡時間和緩動函數 (0.6s ease-out)。
+             這意味著當這些屬性值改變時（通常是添加 'is-visible' 類時），變化會平滑地發生。
+  - will-change: 告知瀏覽器 `opacity` 和 `transform` 屬性將會發生變化，
+                 允許瀏覽器進行潛在的性能優化，例如將元素提升到單獨的渲染層。
+                 應謹慎使用，過多使用可能適得其反。
+*/
+.animate-on-scroll {
+  opacity: 0;
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  will-change: opacity, transform; /* 性能提示 */
+}
+
+/* === 定義不同的動畫效果 === */
+
+/* 
+  向上平移淡入 (Fade In Up)
+  --------------------------
+  .animate-fade-in-up:
+  - 初始狀態 (與 .animate-on-scroll 結合)：元素透明，並且在 Y 軸上向下偏移 40px (transform: translateY(40px))。
+  .animate-fade-in-up.is-visible:
+  - 可見狀態：元素完全不透明 (opacity: 1)，並且 Y 軸偏移回到 0 (transform: translateY(0))。
+  - 動畫效果：元素會從下方 40px 的位置向上平移並同時淡入。
+*/
+.animate-fade-in-up {
+  transform: translateY(40px);
+}
+.animate-fade-in-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 
+  從左側滑入 (Slide In Left)
+  ----------------------------
+  .animate-slide-in-left:
+  - 初始狀態：元素透明，並且在 X 軸上向左偏移 -80px (transform: translateX(-80px))。
+  .animate-slide-in-left.is-visible:
+  - 可見狀態：元素完全不透明，並且 X 軸偏移回到 0。
+  - 動畫效果：元素會從左側 -80px 的位置向右滑入並同時淡入。
+*/
+.animate-slide-in-left {
+  transform: translateX(-80px);
+}
+.animate-slide-in-left.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* 
+  縮放淡入 (Zoom In)
+  --------------------
+  .animate-zoom-in:
+  - 初始狀態：元素透明，並且被縮小到原始尺寸的 80% (transform: scale(0.8))。
+  .animate-zoom-in.is-visible:
+  - 可見狀態：元素完全不透明，並且恢復到原始尺寸 (transform: scale(1))。
+  - 動畫效果：元素會從 80% 的大小放大到 100% 並同時淡入。
+*/
+.animate-zoom-in {
+  transform: scale(0.8);
+}
+.animate-zoom-in.is-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* 
+  僅淡入 (Fade In)
+  -----------------
+  .animate-fade-in:
+  - 初始狀態：元素透明。`transform: none;` 確保此效果不涉及任何位移或縮放，僅有透明度變化。
+  - 過渡效果：為 `opacity` 屬性定義了一個特定的過渡時間和緩動函數 (0.8s ease-in)，
+             覆蓋了 `.animate-on-scroll` 中對 `opacity` 的默認過渡設置。
+             注意：這裡的 `transition` 只針對 `opacity`，如果希望 `transform` 也有過渡（即使是 `none`），
+             則需要將 `.animate-on-scroll` 中的 `transform` 過渡也考慮進來或在此處明確設置 `transform` 的過渡。
+             通常，如果此動畫不涉及 `transform`，只定義 `opacity` 的 `transition` 是可以的。
+  .animate-fade-in.is-visible:
+  - 可見狀態：元素完全不透明。
+  - 動畫效果：元素會原地淡入，沒有任何移動或縮放。
+*/
+.animate-fade-in {
+   transform: none; /* 確保沒有任何 transform 屬性被應用，避免繼承或覆蓋問題 */
+   /* 
+     可以為此特定動畫自定義 transition。
+     如果只希望改變 opacity 的過渡，可以這樣寫：
+     transition-property: opacity;
+     transition-duration: 0.8s;
+     transition-timing-function: ease-in;
+     或者簡寫：
+   */
+   transition: opacity 0.8s ease-in; 
+}
+.animate-fade-in.is-visible {
+   opacity: 1;
+   /* transform: none; // 可選，如果初始狀態有 transform，這裡應重置 */
+}
+
+/* 
+  (可以添加更多動畫效果...) 
+  例如：
+  - animate-slide-in-right
+  - animate-fade-in-down
+  - animate-rotate-in
+  - ...等等
+*/
