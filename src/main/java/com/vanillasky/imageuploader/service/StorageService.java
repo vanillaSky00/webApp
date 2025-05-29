@@ -19,9 +19,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -115,35 +113,51 @@ public class StorageService {
     }
 
 
-    public ResponseEntity<?> handleOneShot(MultipartFile source, String op) throws IOException {
-        System.out.println("In handleOneShot");
-        //save upload to a JVM temp file
-        File tempInput = File.createTempFile("upload-", ".bin");
-        source.transferTo(tempInput);
+//    public ResponseEntity<?> handleOneShot(MultipartFile source, String op) throws IOException {
+//        System.out.println("In handleOneShot");
+//        //save upload to a JVM temp file
+//        File tempInput = File.createTempFile("upload-", ".bin");
+//        source.transferTo(tempInput);
+//
+//        //run the requested algorithm to process the img
+//        byte[] result = imageProcessingService.apply(op, Files.readAllBytes(tempInput.toPath()));
+//
+//        //wrap bytes in a stream for zero-copy transfer
+//        InputStreamResource body =
+//                new InputStreamResource(new ByteArrayInputStream(result));
+//
+//        //build HTTP response
+//        ResponseEntity<InputStreamResource> resp = ResponseEntity.ok()
+//                .header(HttpHeaders.CONTENT_DISPOSITION,
+//                        "attachment; filename=\"" + UUID.randomUUID() + ".png\"")
+//                .contentLength(result.length)
+//                .contentType(MediaType.IMAGE_PNG)
+//                .body(body);
+//        System.out.println("End handleOneShot");
+//        //async cleanup
+//        //new Thread(tempInput::delete).start();
+//        new Thread(() -> {
+//            tempInput.delete();
+//            System.out.println("async cleanup");
+//        }).start();
+//
+//        return resp;
+//    }
 
-        //run the requested algorithm to process the img
-        byte[] result = imageProcessingService.apply(op, Files.readAllBytes(tempInput.toPath()));
+    //test
+    public ResponseEntity<?> handleOneShot(MultipartFile file, String op) {
+        // simulate processing
+        System.out.println("Simulating " + op + " image processing...");
 
-        //wrap bytes in a stream for zero-copy transfer
-        InputStreamResource body =
-                new InputStreamResource(new ByteArrayInputStream(result));
+        // fake result: return URL to test image
+        String fakeImageUrl = "/public/mosaic.jpg";
 
-        //build HTTP response
-        ResponseEntity<InputStreamResource> resp = ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=\"" + UUID.randomUUID() + ".png\"")
-                .contentLength(result.length)
-                .contentType(MediaType.IMAGE_PNG)
-                .body(body);
-        System.out.println("End handleOneShot");
-        //async cleanup
-        //new Thread(tempInput::delete).start();
-        new Thread(() -> {
-            tempInput.delete();
-            System.out.println("async cleanup");
-        }).start();
+        Map<String, Object> result = new HashMap<>();
+        result.put("success", true);
+        result.put("imageUrl", fakeImageUrl);
+        result.put("message", "Image processed successfully with operation: " + op);
 
-        return resp;
+        return ResponseEntity.ok(result);
     }
 
 }

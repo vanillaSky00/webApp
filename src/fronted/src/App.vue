@@ -14,6 +14,10 @@
   <div class="main">
     <DecompressAndDownloadImage />
   </div>
+
+  <div class="main">
+    <MosaicAndDownloadImage />
+  </div>
 </template>
 
 <style scoped>
@@ -29,4 +33,5 @@ import ImageUpload from './components/ImageUpload.vue'
 import ConnectWallet from './components/ConnectWallet.vue'
 import CompressAndDownloadImage from './components/CompressAndDownloadImage.vue'
 import DecompressAndDownloadImage from "@/components/DecompressAndDownloadImage.vue";
+import MosaicAndDownloadImage from "@/components/MosaicAndDownloadImage.vue";
 </script>
