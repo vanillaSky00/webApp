@@ -20,3 +20,10 @@ app:
   cors:
     origins:
      http://localhost:5173
+
+springdoc:
+  api-docs:
+    enabled: false #disable at deployment, available at dev and write the result to static json file
+  swagger-ui:
+    enabled: false
+

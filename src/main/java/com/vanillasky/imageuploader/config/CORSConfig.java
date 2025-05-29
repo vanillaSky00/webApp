@@ -29,6 +29,12 @@ public class CORSConfig {
                         .allowedHeaders("Content-Type", "Authorization")
                         .maxAge(3600);
                 //.allowCredentials(true) //only if you really using cookies
+
+                //add more
+                registry.addMapping("/v3/api-docs")
+                        .allowedOrigins(allowOrigins)
+                        .allowedMethods("GET")
+                        .allowedHeaders("Content-Type", "Authorization", "Accept");
             }
         };
     }
