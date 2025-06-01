@@ -1,4 +1,4 @@
-package com.vanillasky.imageuploader.model.image;
+package com.vanillasky.imageuploader.model.image.processor;
 
 import org.springframework.stereotype.Service;
 

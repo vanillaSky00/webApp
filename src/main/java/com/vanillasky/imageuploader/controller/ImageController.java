@@ -1,6 +1,5 @@
 package com.vanillasky.imageuploader.controller;
 
-import com.vanillasky.imageuploader.model.image.CompressionProcessor;
 import com.vanillasky.imageuploader.service.StorageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -77,6 +76,7 @@ public class ImageController {
             return  ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Invalid operation");
         }
+        System.out.println("finish processAndDownloadImage");
         return storageService.handleOneShot(file, op);
     }
 }

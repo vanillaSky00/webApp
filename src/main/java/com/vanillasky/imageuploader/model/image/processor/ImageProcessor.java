@@ -1,6 +1,4 @@
-package com.vanillasky.imageuploader.model.image;
-
-import org.springframework.stereotype.Service;
+package com.vanillasky.imageuploader.model.image.processor;
 
 public interface ImageProcessor {
     String key(); //"compress", "resize", ... other function

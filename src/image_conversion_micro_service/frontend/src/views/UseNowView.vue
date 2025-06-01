@@ -71,7 +71,7 @@ const finalImageUrl = ref<string | null>(null);
 const errorMessage = ref<string | null>(null);
 
 const backendConfig = {
-  baseUrl: 'https://localhost:8080/api/images/process',
+  baseUrl: 'http://localhost:8080/api/images/process',
   mosaicOperation: 'mosaic'
 };
 
