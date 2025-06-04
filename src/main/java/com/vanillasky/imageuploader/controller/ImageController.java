@@ -66,7 +66,7 @@ public class ImageController {
     // matches /process?op=decompress     → op = "decompress"
     // matches /process?op=mosaic         → op = "mosaic"
     @PostMapping("/process")
-    public ResponseEntity<?> processAndDownloadImage(@RequestParam("image") MultipartFile file,//for postgrel key value
+    public ResponseEntity<?> processAndDownloadImage(@RequestParam("image") MultipartFile[] files,//for postgrel key value
                                                      @RequestParam(defaultValue = "compress") String op)
             throws IOException {
 
@@ -77,6 +77,25 @@ public class ImageController {
                     .body("Invalid operation");
         }
         System.out.println("finish processAndDownloadImage");
-        return storageService.handleOneShot(file, op);
+        return storageService.handleOneShot(files, op);
     }
+
+//    @PostMapping("/process")
+//    public ResponseEntity<?> processAndDownloadImage(@RequestParam("image") MultipartFile[] files,//for postgrel key value
+//                                                     @RequestParam(defaultValue = "compress") String op)
+//            throws IOException {
+//        if (files.length == 0)
+//            return ResponseEntity.badRequest().body("No files uploaded");
+//
+//        if (files.length == 1)//do default 1
+//
+//            //sanitization
+//            System.out.println("op: " + op);
+//        if(!op.equals("compress") && !op.equals("decompress") && !op.equals("mosaic")) {
+//            return  ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//                    .body("Invalid operation");
+//        }
+//        System.out.println("finish processAndDownloadImage");
+//        return storageService.handleOneShot(file, op);
+//    }
 }

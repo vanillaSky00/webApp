@@ -112,8 +112,39 @@ public class StorageService {
         }
     }
 
+    public ResponseEntity<?> handleOneShot(MultipartFile[] files, String op) throws IOException {
+        System.out.println("In handleOneShot, file length: " + files.length);
 
-    public ResponseEntity<?> handleOneShot(MultipartFile source, String op) throws IOException {
+        if (files == null || files.length == 0) {
+            return ResponseEntity.badRequest().body("No files uploaded");
+        }
+
+        //what if files are large?
+        byte[][] images = new byte[files.length][];
+        for (int i = 0; i < files.length; i++) {
+            images[i] = files[i].getBytes();
+        }
+
+        //run the requested algorithm to process the img
+        byte[] result = imageProcessingService.apply(op, images);
+
+        //save result image to static folder (e.g., /static/output/)
+        String fileName = UUID.randomUUID() + ".jpg";
+        File outputDir = new File("src/main/resources/static/output/");
+        outputDir.mkdirs();  // create if not exist
+        File outputFile = new File(outputDir, fileName);
+        Files.write(outputFile.toPath(), result);
+
+        //public URL
+        String url = "/output/" + fileName;
+
+        //return URL as JSON
+        Map<String, String> body = Map.of("url", url);
+        return ResponseEntity.ok().body(body);
+    }
+
+    //test
+    public ResponseEntity<?> handleOneShot_test1(MultipartFile source, String op) throws IOException {
         System.out.println("In handleOneShot");
         //save upload to a JVM temp file
         File tempInput = File.createTempFile("upload-", ".bin");
@@ -144,20 +175,20 @@ public class StorageService {
         return resp;
     }
 
-    //test
-//    public ResponseEntity<?> handleOneShot(MultipartFile file, String op) {
-//        // simulate processing
-//        System.out.println("Simulating " + op + " image processing...");
-//
-//        // fake result: return URL to test image
-//        String fakeImageUrl = "/public/mosaic.jpg";
-//
-//        Map<String, Object> result = new HashMap<>();
-//        result.put("success", true);
-//        result.put("imageUrl", fakeImageUrl);
-//        result.put("message", "Image processed successfully with operation: " + op);
-//
-//        return ResponseEntity.ok(result);
-//    }
+
+    public ResponseEntity<?> handleOneShot_test0(MultipartFile file, String op) {
+        // simulate processing
+        System.out.println("Simulating " + op + " image processing...");
+
+        // fake result: return URL to test image
+        String fakeImageUrl = "/public/mosaic.jpg";
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("success", true);
+        result.put("imageUrl", fakeImageUrl);
+        result.put("message", "Image processed successfully with operation: " + op);
+
+        return ResponseEntity.ok(result);
+    }
 
 }

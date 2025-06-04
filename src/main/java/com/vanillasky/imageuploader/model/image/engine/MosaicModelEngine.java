@@ -5,6 +5,7 @@ import com.vanillasky.imageuploader.model.image.engine.mosaicUtils.*;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MosaicModelEngine {
@@ -45,22 +46,24 @@ public class MosaicModelEngine {
 
     /* ─── public API ───────────────────────────────────────────── */
     /**
-     * @param input raw bytes of an uploaded image
+     * @param inputs raw bytes of an uploaded image
      * @return mosaic as JPG bytes
      */
-    public byte[] preprocess(byte[] input) throws Exception {
-        //hardcoed test
-        //String targetPath = "/tmp/target_resized.jpg";
-        String targetPath = "/tmp/target.jpg";
-        BufferedImage targetImage = ImageLoader.loadImage(targetPath);
+    public byte[] preprocess(byte[][] inputs) throws Exception {
 
-        // read input bytes into BufferedImage
-        //BufferedImage targetImage = ImageConverter.bytesToBufferedImage(input);
+        //base image
+        BufferedImage targetImage = ImageIO.read(new ByteArrayInputStream(inputs[0]));
+        if (targetImage == null) throw new IllegalArgumentException("Base image is invalid or unsupported format.");
+
+        //images library
+        List<BufferedImage> tileImages = new ArrayList<>();
+        for (int i = 1; i < inputs.length; i++) {
+            BufferedImage tile = ImageIO.read(new ByteArrayInputStream(inputs[i]));
+            if (tile == null) continue; // skip corrupt tiles
+            tileImages.add(tile);
+        }
 
         /* ---- start PREPROCESSING as BufferedImage ---- */
-        File tileFolder = new File(workDir, "input/compressed_tile");
-        List<BufferedImage> tileImages = ImageLoader.loadImagesFromFolder(tileFolder.getPath());
-
         // split target into tiles
         List<BufferedImage> targetTiles =
                 ImageSplitter.splitImage(targetImage, tileWidth, tileHeight);
@@ -89,18 +92,19 @@ public class MosaicModelEngine {
         return ImageConverter.bufferedImageToBytes(mosaic, "jpg");
     }
 
+    //test
     public byte[] preprocess_(byte[] input) throws Exception {
-        //hardcoed test
+        //hardcoed test one image
         String targetPath = "/tmp/target_resized.jpg";
         BufferedImage targetImage = ImageLoader.loadImage(targetPath);
 
         // read input bytes into BufferedImage
         //BufferedImage targetImage = ImageConverter.bytesToBufferedImage(input);
 
-        /* ---- start PREPROCESSING as BufferedImage ---- */
         File tileFolder = new File(workDir, "input/compressed_tile");
         List<BufferedImage> tileImages = ImageLoader.loadImagesFromFolder(tileFolder.getPath());
 
+        /* ---- start PREPROCESSING as BufferedImage ---- */
         // split target into tiles
         List<BufferedImage> targetTiles =
                 ImageSplitter.splitImage(targetImage, tileWidth, tileHeight);
@@ -118,12 +122,12 @@ public class MosaicModelEngine {
         /* ---- return as JPG bytes ---- */
         /* ---- finish PREPROCESSING as BufferedImage ---- */
         // Save mosaic image
-//        try {
-//            System.out.println("output image");
-//            ImageIO.write(mosaic, "jpg", new File("/tmp/output.jpg"));
-//        } catch (IOException e) {
-//            System.err.println("Failed to save mosaic: " + e.getMessage());
-//        }
+        try {
+            System.out.println("output image");
+            ImageIO.write(mosaic, "jpg", new File("/tmp/output.jpg"));
+        } catch (IOException e) {
+            System.err.println("Failed to save mosaic: " + e.getMessage());
+        }
 
         //return as bytes
         return ImageConverter.bufferedImageToBytes(mosaic, "jpg");

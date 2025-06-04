@@ -23,4 +23,9 @@ public class ImageProcessingService {
     public byte[] apply(String op, byte[] data) {
         return map.get(op).process(data);
     }
+
+    //use the corresponding img processors (op) when calling
+    public byte[] apply(String op, byte[][] data) {
+        return map.get(op).process(data);
+    }
 }

@@ -21,18 +21,28 @@ public class MosaicProcessor implements ImageProcessor{
 
     @Override
     public byte[] process(byte[] in) {
-        System.out.println("process mosaic photo");
+        throw new UnsupportedOperationException("Use process(byte[][]) for mosaic");
+    }
 
-        //testing:
-//        try {
-//            Path fakeImagePath = Paths.get("/tmp/mosaic.jpg");
-//            return Files.readAllBytes(fakeImagePath);
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
+    @Override
+    public byte[] process(byte[][] in) {
+        System.out.println("process mosaic photo");
         try {
             return engine.preprocess(in);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
+    // test
+//    @Override
+//    public byte[] process(byte[] in) {
+//        System.out.println("process mosaic photo");
+        //testing:
+//        try {
+//            Path fakeImagePath = Paths.get("/tmp/mosaic.jpg");
+//            return Files.readAllBytes(fakeImagePath);
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//    }
 }

@@ -88,7 +88,7 @@ async function handleGenerate() {
   props.sourceImages.forEach((file, index) => {
     // 你可能需要根據後端期望的格式來命名這些文件
     // 例如，如果後端可以處理多個名為 'sourceImages' 的文件：
-    formData.append('sourceImages', file, file.name);
+    formData.append('image', file, file.name);
     // 或者如果需要不同的鍵名：
     // formData.append(`sourceImage[${index}]`, file, file.name);
   });
