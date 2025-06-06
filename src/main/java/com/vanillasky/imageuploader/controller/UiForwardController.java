@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UiForwardController {
 
     // Anything *not* starting with /api and not a static asset (*.js, *.css, *.png …)
-    @RequestMapping("/{path:^(?!api$).*$}/**")
+    @RequestMapping("/{path:^(?!api|download).*$}/**")
     public String forward(){
         return "forward:/";
     }
 }
+
+//UiForwardController hijack the WebConfig

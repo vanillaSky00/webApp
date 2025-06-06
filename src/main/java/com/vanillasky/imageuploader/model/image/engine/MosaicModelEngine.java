@@ -56,13 +56,13 @@ public class MosaicModelEngine {
         if (targetImage == null) throw new IllegalArgumentException("Base image is invalid or unsupported format.");
 
         //images library
-        List<BufferedImage> tileImages = new ArrayList<>();
-        for (int i = 1; i < inputs.length; i++) {
-            BufferedImage tile = ImageIO.read(new ByteArrayInputStream(inputs[i]));
-            if (tile == null) continue; // skip corrupt tiles
-            tileImages.add(tile);
-        }
-
+//        List<BufferedImage> tileImages = new ArrayList<>();
+//        for (int i = 1; i < inputs.length; i++) {
+//            BufferedImage tile = ImageIO.read(new ByteArrayInputStream(inputs[i]));
+//            if (tile == null) continue; // skip corrupt tiles
+//            tileImages.add(tile);
+//        }
+        List<BufferedImage> tileImages = ImageLoader.loadImagesFromFolder("final_project/image/input/compressed_tile");
         /* ---- start PREPROCESSING as BufferedImage ---- */
         // split target into tiles
         List<BufferedImage> targetTiles =
@@ -80,13 +80,6 @@ public class MosaicModelEngine {
         );
         /* ---- return as JPG bytes ---- */
         /* ---- finish PREPROCESSING as BufferedImage ---- */
-        // Save mosaic image
-        try {
-            System.out.println("output image");
-            ImageIO.write(mosaic, "jpg", new File("/tmp/output.jpg"));
-        } catch (IOException e) {
-            System.err.println("Failed to save mosaic: " + e.getMessage());
-        }
 
         //return as bytes
         return ImageConverter.bufferedImageToBytes(mosaic, "jpg");

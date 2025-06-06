@@ -1,5 +1,6 @@
 package com.vanillasky.imageuploader.controller;
 
+import com.vanillasky.imageuploader.service.ImageProcessingService;
 import com.vanillasky.imageuploader.service.StorageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,17 +16,19 @@ import java.util.List;
 public class ImageController {
     // here can add service and utils for real calling handle, controller only assign the endpoint
     // job to each component
-    private final StorageService service;
     private final StorageService storageService;
+    private final ImageProcessingService imageProcessingService;
 
-    public ImageController(StorageService service, StorageService storageService) {
-        this.service = service;
+    public ImageController(StorageService storageService,
+                           ImageProcessingService imageProcessingService
+    ) {
         this.storageService = storageService;
+        this.imageProcessingService = imageProcessingService;
     }
 
     @PostMapping
     public ResponseEntity<?> uploadImage(@RequestParam("image") MultipartFile file) throws IOException {
-        String uploadImage = service.uploadImage(file);
+        String uploadImage = storageService.uploadImage(file);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(uploadImage);
     }
@@ -33,7 +36,7 @@ public class ImageController {
 
     @GetMapping ("/{fileName}")
     public ResponseEntity<?> downloadImage(@PathVariable String fileName){
-        byte[] imageData = service.downloadImage(fileName);
+        byte[] imageData = storageService.downloadImage(fileName);
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.valueOf("image/png"))
                 .body(imageData);
@@ -41,7 +44,7 @@ public class ImageController {
 
     @PostMapping("/fileSystem")
     public ResponseEntity<?> uploadImageToFileSystem(@RequestParam("image") MultipartFile file) throws IOException {
-        String uploadImage = service.uploadImageToFileSystem(file);
+        String uploadImage = storageService.uploadImageToFileSystem(file);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(uploadImage);
     }
@@ -49,7 +52,7 @@ public class ImageController {
 
     @GetMapping ("/fileSystem/{fileName}")
     public ResponseEntity<?> downloadImageFromFileSystem(@PathVariable String fileName) throws IOException {
-        byte[] imageData = service.downloadImageFromFileSystem(fileName);
+        byte[] imageData = storageService.downloadImageFromFileSystem(fileName);
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.valueOf("image/png"))
                 .body(imageData);
@@ -57,7 +60,7 @@ public class ImageController {
 
     @GetMapping("/fileSystem/list")
     public ResponseEntity<?> listAllImages() {
-        List<String> fileNames = service.loadAllImageFileNames(); // Implement this
+        List<String> fileNames = storageService.loadAllImageFileNames(); // Implement this
         return ResponseEntity.ok(fileNames);
     }
 
@@ -77,7 +80,7 @@ public class ImageController {
                     .body("Invalid operation");
         }
         System.out.println("finish processAndDownloadImage");
-        return storageService.handleOneShot(files, op);
+        return imageProcessingService.handleOneShot(files, op);
     }
 
 //    @PostMapping("/process")
