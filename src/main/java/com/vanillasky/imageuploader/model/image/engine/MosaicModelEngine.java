@@ -62,7 +62,7 @@ public class MosaicModelEngine {
 //            if (tile == null) continue; // skip corrupt tiles
 //            tileImages.add(tile);
 //        }
-        List<BufferedImage> tileImages = ImageLoader.loadImagesFromFolder("final_project/image/input/compressed_tile");
+        List<BufferedImage> tileImages = ImageLoader.loadImagesFromFolder("compressed_tile");
         /* ---- start PREPROCESSING as BufferedImage ---- */
         // split target into tiles
         List<BufferedImage> targetTiles =
