@@ -81,23 +81,23 @@
         class="parallax-layer layer-front front-1"
         data-parallax-factor="2.0"
       />
-      <Typewriter :text="dynamicTitle" 
-      :speed="100" 
-      :loop="true" 
+      <Typewriter :text="dynamicTitle"
+      :speed="100"
+      :loop="true"
       @completed="onTypingComplete"
       class="title-text parallax-layer layer-back"
       data-parallax-factor="2.0"
       />
 
-      <Typewriter :text="dynamicSubTitle" 
-      :speed="100" 
-      :loop="true" 
+      <Typewriter :text="dynamicSubTitle"
+      :speed="100"
+      :loop="true"
       @completed="onTypingComplete"
       class="sub-title-text parallax-layer layer-back"
       data-parallax-factor="2.0"
       />
     </ParallaxContainer>
-    
+
 
     <!-- 基本用法：左圖右文 -->
     <!-- 使用 public 文件夾下的路徑或導入的變數 -->
@@ -128,7 +128,7 @@
       image-alt="描述圖片 2"
       title="第二個區塊標題 (圖片在右)"
       description="這是第二個區塊的描述，圖片會顯示在右邊。"
-      :reverse="true" 
+      :reverse="true"
     /> -->
     <!-- 啟用反轉 -->
 
@@ -155,7 +155,7 @@ import SplitLayoutSection from '@/components/SplitLayoutSection.vue'; // 確保�
 
 import { ref } from 'vue';
 
-const dynamicTitle = ref("Welcome\nto\nPhotomosaic");
+const dynamicTitle = ref("Welcome\nto\nBlurNest");
 const dynamicSubTitle = ref("big pictures built out of thousands of other tiny pictures.");
 
 const onTypingComplete = () => {
@@ -253,8 +253,8 @@ const onTypingComplete = () => {
   /* 移除預設的 top/left/width/height，讓每個圖層可以自訂 */
   /* top: 0; */
   /* left: 0; */
-  // width: 100%; 
-  // height: 100%; 
+  // width: 100%;
+  // height: 100%;
   /* object-fit: cover; 保留或根據需要修改 */
   /* transition 已由 ParallaxContainer 的 :deep 處理 */
   /* display: block; 確保是塊級元素 */

@@ -1,6 +1,6 @@
 <template>
   <div class="use-now-page">
-    <h1 class="page-title">製作你的照片馬賽克</h1>
+    <h1 class="page-title">製作屬於你的照片拼貼畫</h1>
     <p class="page-subtitle">將你的照片集變成獨一無二的藝術品！</p>
 
     <section class="upload-section">
@@ -10,7 +10,7 @@
     <section class="upload-section">
       <h2 class="section-title">步驟 2：上傳你的素材圖片資料夾</h2>
       <p class="section-description">
-        選擇一個包含多張小圖片的資料夾，這些圖片將被用來填充你的馬賽克。系統會自動過濾非圖片檔案。
+        選擇一個包含多張小圖片的資料夾，這些圖將拼貼出你照片。
       </p>
       <DirectoryUploadBlock_Simplified @files-selected="handleFolderFilesSelected" />
     </section>
@@ -28,7 +28,7 @@
       @busy-change="handleBusyChange"
     >
       <!-- 按鈕文本根據 isGenerating 動態變化 (通過 slot 傳入) -->
-      {{ isGenerating ? '生成中...' : '開始生成馬賽克' }}
+      {{ isGenerating ? '生成中...' : '開始打造圖像拼貼' }}
     </MosaicGenerateButton>
 
     <!-- 進度條區域 -->

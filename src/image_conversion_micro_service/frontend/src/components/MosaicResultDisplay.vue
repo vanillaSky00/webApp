@@ -1,9 +1,9 @@
 <template>
   <div class="final-image-area">
     <h2 class="section-title">生成結果</h2>
-    <img :src="imageUrl" alt="最終生成的馬賽克圖片" class="final-image">
+    <img :src="imageUrl" alt="拼貼完成！這是你的作品" class="final-image">
     <a :href="imageUrl" :download="downloadFileName" class="download-button">
-      下載馬賽克圖片
+      下載你的拼貼作品
     </a>
   </div>
 </template>

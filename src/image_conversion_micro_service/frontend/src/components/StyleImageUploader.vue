@@ -2,7 +2,7 @@
   <div class="style-image-uploader">
     <h2 class="section-title">步驟 1：選擇你的風格圖片 (單張)</h2>
     <p class="section-description">
-      這張圖片將決定馬賽克的整體外觀和顏色風格。
+      這張圖片將決定拼貼照片的整體外觀和顏色風格。
     </p>
     <div class="single-image-upload-area">
       <button @click="triggerStyleImageSelect" class="select-button">

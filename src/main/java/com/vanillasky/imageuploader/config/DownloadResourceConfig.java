@@ -24,7 +24,7 @@ public class DownloadResourceConfig implements WebMvcConfigurer {
 
         registry.addResourceHandler("/download/**")//an endpoint
                 //.addResourceLocations("file:download/")
-                .addResourceLocations("file:/Users/harris/IdeaProjects/image-uploader-spring/imageuploader/download/")
+                .addResourceLocations("file:download/")
                 .resourceChain(true);//what is this?
     }
 }
