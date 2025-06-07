@@ -1,4 +1,4 @@
-package com.vanillasky.imageuploader.entity;
+package com.blurnest.imageuploader.entity;
 
 import jakarta.persistence.*;//use jpa id
 import lombok.AllArgsConstructor;

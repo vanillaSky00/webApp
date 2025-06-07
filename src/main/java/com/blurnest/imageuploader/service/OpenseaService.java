@@ -1,4 +1,4 @@
-package com.vanillasky.imageuploader.service;
+package com.blurnest.imageuploader.service;
 
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;

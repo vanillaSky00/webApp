@@ -1,7 +1,7 @@
-package com.vanillasky.imageuploader.controller;
+package com.blurnest.imageuploader.controller;
 
-import com.vanillasky.imageuploader.service.ImageProcessingService;
-import com.vanillasky.imageuploader.service.StorageService;
+import com.blurnest.imageuploader.service.ImageProcessingService;
+import com.blurnest.imageuploader.service.StorageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

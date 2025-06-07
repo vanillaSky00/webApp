@@ -1,4 +1,4 @@
-package com.vanillasky.imageuploader.model.image.processor;
+package com.blurnest.imageuploader.model.image.processor;
 
 import org.springframework.stereotype.Component;
 

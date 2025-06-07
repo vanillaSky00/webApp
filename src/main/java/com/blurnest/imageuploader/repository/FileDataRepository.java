@@ -1,7 +1,7 @@
-package com.vanillasky.imageuploader.repository;
+package com.blurnest.imageuploader.repository;
 
 
-import com.vanillasky.imageuploader.entity.FileData;
+import com.blurnest.imageuploader.entity.FileData;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

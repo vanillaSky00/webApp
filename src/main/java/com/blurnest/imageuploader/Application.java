@@ -1,12 +1,12 @@
-package com.vanillasky.imageuploader;
+package com.blurnest.imageuploader;
 
-import com.vanillasky.imageuploader.controller.ImageController;
+import com.blurnest.imageuploader.controller.ImageController;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @SpringBootApplication
-@EntityScan(basePackages = "com.vanillasky.imageuploader.entity")
+@EntityScan(basePackages = "com.blurnest.imageuploader.entity")
 public class Application {
 
     private ImageController imageController;

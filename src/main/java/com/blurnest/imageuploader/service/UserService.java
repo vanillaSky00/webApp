@@ -1,4 +1,4 @@
-package com.vanillasky.imageuploader.service;
+package com.blurnest.imageuploader.service;
 
 public class UserService {
 }

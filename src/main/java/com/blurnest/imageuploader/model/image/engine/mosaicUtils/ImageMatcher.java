@@ -1,4 +1,4 @@
-package com.vanillasky.imageuploader.model.image.engine.mosaicUtils;
+package com.blurnest.imageuploader.model.image.engine.mosaicUtils;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;

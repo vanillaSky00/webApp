@@ -1,4 +1,4 @@
-package com.vanillasky.imageuploader.config;
+package com.blurnest.imageuploader.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;

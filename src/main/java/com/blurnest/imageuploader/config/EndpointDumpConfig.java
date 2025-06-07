@@ -1,4 +1,4 @@
-package com.vanillasky.imageuploader.config;
+package com.blurnest.imageuploader.config;
 
 import jakarta.annotation.Nullable;
 import org.springframework.boot.CommandLineRunner;

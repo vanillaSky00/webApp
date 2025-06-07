@@ -1,11 +1,10 @@
-package com.vanillasky.imageuploader.model.image.engine;
+package com.blurnest.imageuploader.model.image.engine;
 
-import com.vanillasky.imageuploader.model.image.engine.mosaicUtils.*;
+import com.blurnest.imageuploader.model.image.engine.mosaicUtils.*;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MosaicModelEngine {

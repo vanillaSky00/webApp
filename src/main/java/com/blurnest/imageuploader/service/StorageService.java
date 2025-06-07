@@ -1,9 +1,9 @@
-package com.vanillasky.imageuploader.service;
+package com.blurnest.imageuploader.service;
 
-import com.vanillasky.imageuploader.entity.FileData;
-import com.vanillasky.imageuploader.entity.ImageData;
-import com.vanillasky.imageuploader.repository.FileDataRepository;
-import com.vanillasky.imageuploader.repository.StorageRepository;
+import com.blurnest.imageuploader.entity.FileData;
+import com.blurnest.imageuploader.entity.ImageData;
+import com.blurnest.imageuploader.repository.FileDataRepository;
+import com.blurnest.imageuploader.repository.StorageRepository;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

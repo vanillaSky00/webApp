@@ -1,4 +1,4 @@
-package com.vanillasky.imageuploader.entity;
+package com.blurnest.imageuploader.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

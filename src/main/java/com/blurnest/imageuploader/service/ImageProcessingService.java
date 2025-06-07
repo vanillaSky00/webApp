@@ -1,6 +1,6 @@
-package com.vanillasky.imageuploader.service;
+package com.blurnest.imageuploader.service;
 
-import com.vanillasky.imageuploader.model.image.processor.ImageProcessor;
+import com.blurnest.imageuploader.model.image.processor.ImageProcessor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

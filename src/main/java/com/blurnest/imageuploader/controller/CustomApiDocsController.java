@@ -1,4 +1,4 @@
-package com.vanillasky.imageuploader.controller;
+package com.blurnest.imageuploader.controller;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;

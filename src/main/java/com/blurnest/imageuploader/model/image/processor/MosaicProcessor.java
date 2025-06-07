@@ -1,6 +1,6 @@
-package com.vanillasky.imageuploader.model.image.processor;
+package com.blurnest.imageuploader.model.image.processor;
 
-import com.vanillasky.imageuploader.model.image.engine.MosaicModelEngine;
+import com.blurnest.imageuploader.model.image.engine.MosaicModelEngine;
 import org.springframework.stereotype.Component;
 
 import java.io.File;

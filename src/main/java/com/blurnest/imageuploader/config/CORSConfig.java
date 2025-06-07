@@ -1,4 +1,4 @@
-package com.vanillasky.imageuploader.config;// CORSConfig.java
+package com.blurnest.imageuploader.config;// CORSConfig.java
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
