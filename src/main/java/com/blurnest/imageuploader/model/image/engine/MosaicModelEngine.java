@@ -13,34 +13,43 @@ public class MosaicModelEngine {
     private final int tileWidth;     // immutable after build()
     private final int tileHeight;
     private final File workDir;      // e.g. new File("image")
+    private final boolean userChooseBlur;
 
     /* ─── builder ──────────────────────────────────────────────── */
     public static class Builder {
         private int tileWidth  = 10;
         private int tileHeight = 10;
         private File workDir   = new File("/tmp");
+        private boolean userChooseBlur = false;
 
         public Builder tileSize(int w, int h) {
             this.tileWidth  = w;
             this.tileHeight = h;
             return this;
         }
+
+        public Builder userChooseBlur(boolean blur) {
+            this.userChooseBlur = blur;
+            return this;
+        }
+
         public Builder workDir(File dir) {
             this.workDir = dir;
             return this;
         }
 
         public MosaicModelEngine build() {
-            return new MosaicModelEngine(tileWidth, tileHeight, workDir);
+            return new MosaicModelEngine(tileWidth, tileHeight, workDir, userChooseBlur);
         }
     }
     public static Builder builder() { return new Builder(); }
 
     /* ─── ctor (private) ───────────────────────────────────────── */
-    private MosaicModelEngine(int tw, int th, File dir) {
+    private MosaicModelEngine(int tw, int th, File dir, boolean userChooseBlur) {
         this.tileWidth  = tw;
         this.tileHeight = th;
         this.workDir    = dir;
+        this.userChooseBlur = userChooseBlur;
     }
 
     /* ─── public API ───────────────────────────────────────────── */
@@ -75,7 +84,7 @@ public class MosaicModelEngine {
         int cols = targetImage.getWidth()  / tileWidth;
         int rows = targetImage.getHeight() / tileHeight;
         BufferedImage mosaic = MosaicBuilder.buildMosaic(
-                matchedTiles, cols, rows, tileWidth, tileHeight
+                matchedTiles, cols, rows, tileWidth, tileHeight, userChooseBlur
         );
         /* ---- return as JPG bytes ---- */
         /* ---- finish PREPROCESSING as BufferedImage ---- */
@@ -109,7 +118,7 @@ public class MosaicModelEngine {
         int cols = targetImage.getWidth()  / tileWidth;
         int rows = targetImage.getHeight() / tileHeight;
         BufferedImage mosaic = MosaicBuilder.buildMosaic(
-                matchedTiles, cols, rows, tileWidth, tileHeight
+                matchedTiles, cols, rows, tileWidth, tileHeight, userChooseBlur
         );
         /* ---- return as JPG bytes ---- */
         /* ---- finish PREPROCESSING as BufferedImage ---- */

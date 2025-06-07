@@ -9,7 +9,7 @@ public class MosaicBuilder {
 
     // Build a mosaic image from matched tiles
     public static BufferedImage buildMosaic(List<BufferedImage> tiles, int cols, int rows, int tileWidth,
-                                            int tileHeight) {
+                                            int tileHeight, boolean applyBlur) {
         int mosaicWidth = cols * tileWidth;
         int mosaicHeight = rows * tileHeight;
 
@@ -20,6 +20,10 @@ public class MosaicBuilder {
             for (int col = 0; col < cols; col++) {
                 int index = row * cols + col;
                 BufferedImage tile = blur(tiles.get(index));
+
+                if (applyBlur) {
+                    tile = blur(tile);
+                }
 
                 int x = col * tileWidth;
                 int y = row * tileHeight;

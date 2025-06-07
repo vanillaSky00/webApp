@@ -12,6 +12,7 @@ public class MosaicProcessor implements ImageProcessor{
             MosaicModelEngine.builder()
                     .tileSize(10, 10)
                     .workDir(new File("/tmp/final_project/image"))
+                    .userChooseBlur(false)
                     .build();
 
     @Override
