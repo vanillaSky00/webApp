@@ -53,10 +53,4 @@ src/main/java/com/blurnest/imageuploader/
 │   └── StorageRepository.java
 │ 
 └── ImageUploaderApplication.java
-
-src/main/resources/
-├── static/                  --> Exposed static files (e.g., processed images)
-├── templates/               --> V in MVC (Thymeleaf views)
-│   └── uploadForm.html
-└── application.properties
 ```
