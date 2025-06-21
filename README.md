@@ -48,7 +48,7 @@ src/main/java/com/blurnest/imageuploader/
 │   └── processor/
 │       └── ImageProcessor.java
 │       └── MosaicProcessor.java
-├── repository/              --> Domain objects and image processing utilities
+├── repository/              
 │   └── FileDataRepository.java
 │   └── StorageRepository.java
 │ 
