@@ -2,7 +2,7 @@
   <div class="image-source-selector-container">
     <h2 class="main-title">步驟 2：選擇你的素材圖片</h2>
     <p class="main-description">
-      你可以從本機資料夾上傳圖片，或選擇我們提供的預設主題圖片集。所有選擇的圖片將合併用於生成馬賽克。
+      你可以從本機資料夾上傳圖片，或選擇我們提供的預設主題圖片集。所有選擇的圖片將合併用於生成拼貼畫。
     </p>
 
     <div class="mode-switcher">

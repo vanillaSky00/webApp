@@ -1,7 +1,7 @@
 <template>
   <div class="use-now-page">
     <!-- 原本的標題和副標題 -->
-    <h1 class="page-title main-header-title">製作你的照片馬賽克</h1>
+    <h1 class="page-title main-header-title">製作你的照片拼貼畫</h1>
     <p class="page-subtitle main-header-subtitle">將你的照片集變成獨一無二的藝術品！</p>
 
     <!-- 新增的步驟導航元件 -->
@@ -33,7 +33,7 @@
         @progress="updateGenerationProgress"
         @busy-change="handleBusyChange"
       >
-        {{ isGenerating ? '生成中...' : '開始生成馬賽克' }}
+        {{ isGenerating ? '生成中...' : '開始生成拼貼畫' }}
       </MosaicGenerateButton>
 
       <div v-if="isGenerating" class="progress-area">
