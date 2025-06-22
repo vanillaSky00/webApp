@@ -20,25 +20,42 @@ src/
 
 ## Backend
 ```
-src/main/java/com/vanillasky/imageuploader/
-├── controller/              --> C in MVC
+src/main/java/com/blurnest/imageuploader/
+├── config/                  --> System configs
+│   └── CORSConfig.java
+│   └── DownloadResourceConfig.java
+│   └── EndpointDumpConfig.java
+│   └── OpenApiConfig.java
+├── controller/              --> REST API endpoints
+│   └── CustomApiDocsController.java
 │   └── ImageController.java
-│   └── PageController.java
-│   └── UserController.java
-├── service/                 --> business logic (optional, but good)
+│   └── UiForwardController.java
+├── service/                 --> Business logic layer
+│   └── ImageProcessingService.java
 │   └── StorageService.java
 │   └── UserService.java
-├── model/                   --> M in MVC (domain/data objects)
-│   └── ImageUtils
-├── repository/
+├── model/                   --> Domain objects and image processing utilities
+│   └── engine/
+│       └── FileDataRepository.java
+│       └── mosaicUtils/
+│           └── ColorUtils.java
+│           └── ImageConverter.java
+│           └── ImageLoader.java
+│           └── ImageMatcher.java
+│           └── ImageSplitter.java
+│           └── MosaicBuilder.java
+│           └── ColorUtils.java
+│   └── processor/
+│       └── ImageProcessor.java
+│       └── MosaicProcessor.java
+├── repository/              --> Domain objects and image processing utilities
 │   └── FileDataRepository.java
-│   └── ImageDataRepository.java
-├── config/                  --> config classes (e.g., file upload size limits)
-│   
+│   └── StorageRepository.java
+│ 
 └── ImageUploaderApplication.java
 
 src/main/resources/
-├── static/                  --> where processed images can be served
+├── static/                  --> Exposed static files (e.g., processed images)
 ├── templates/               --> V in MVC (Thymeleaf views)
 │   └── uploadForm.html
 └── application.properties
