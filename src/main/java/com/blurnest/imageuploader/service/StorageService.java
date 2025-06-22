@@ -1,40 +1,44 @@
-//package com.blurnest.imageuploader.service;
-//
+package com.blurnest.imageuploader.service;
+
 //import com.blurnest.imageuploader.entity.FileData;
 //import com.blurnest.imageuploader.entity.ImageData;
 //import com.blurnest.imageuploader.repository.FileDataRepository;
 //import com.blurnest.imageuploader.repository.StorageRepository;
-//
-//import org.springframework.stereotype.Service;
-//import org.springframework.web.multipart.MultipartFile;
-//
-//import java.io.File;
-//import java.io.IOException;
-//import java.nio.file.Files;
-//import java.nio.file.Path;
-//import java.nio.file.Paths;
-//import java.util.*;
-//import java.util.stream.Collectors;
-//import java.util.stream.Stream;
-//
-//
-////@Service
-//public class StorageService {
-//
-//    private final StorageRepository repository;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+
+@Service
+public class StorageService {
+
+    //private final StorageRepository repository;
 //    private final FileDataRepository fileDataRepository;
 //    private final ImageProcessingService imageProcessingService;
 //
 //    public StorageService(StorageRepository repository,
 //                          FileDataRepository fileDataRepository,
 //                          ImageProcessingService imageProcessingService) {
-//        //this.repository = repository;
-//        //this.fileDataRepository = fileDataRepository;
+//        this.repository = repository;
+//        this.fileDataRepository = fileDataRepository;
 //        this.imageProcessingService = imageProcessingService;
 //    }
-//
-//    private final String FOLDER_PATH = "/Users/harris/uploads/";
-//
+
+    private final String FOLDER_PATH = "/Users/harris/uploads/";
+
+
+
+
+
 //    /**
 //     * upload an image to the database
 //     * @param file
@@ -115,4 +119,4 @@
 //            throw new RuntimeException("Could not list files", e);
 //        }
 //    }
-//}
+}

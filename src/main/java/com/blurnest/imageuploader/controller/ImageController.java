@@ -44,4 +44,18 @@ public class ImageController {
         System.out.println("finish processAndDownloadImage");
         return imageProcessingService.handleOneShot(files, op);
     }
+
+//    @DeleteMapping("/download/{fileName}")
+//    public ResponseEntity<?> deleteImage(@PathVariable String fileName) {
+//        if (!fileName.matches("^[a-zA-Z0-9\\-]+\\.jpg$")) {
+//            return ResponseEntity.badRequest().body("Invalid file name");
+//        }
+//
+//        File file = new File("download", fileName);
+//        if (file.exists() && file.delete()) {
+//            return ResponseEntity.ok(Map.of("success", true, "message", "File deleted"));
+//        } else {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File not found");
+//        }
+//    }
 }
