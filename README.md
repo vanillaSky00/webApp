@@ -1,21 +1,34 @@
 ## Frontend
 ```
-src/
-└── frontend/
-    ├── node_modules/             # Installed dependencies (auto-created)
-    ├── public/                   # Static assets served as-is
-    │   └── index.html            # HTML entry point
-    ├── src/                      # Source code
-    │   ├── assets/               # Images, global styles, etc.
-    │   ├── components/           # Reusable Vue components
-    │   ├── App.vue               # Root component
-    │   └── main.js               # App entry point
-    ├── .gitignore                # Files to ignore in Git
-    ├── babel.config.js           # Babel transpilation config
-    ├── jsconfig.json             # JS tooling support (optional)
-    ├── package.json              # Project metadata & dependencies
-    ├── package-lock.json         # Exact versions of npm dependencies
-    └── README.md                 # Project info
+src/image_conversion_micro_service/frontend/src
+├── App.vue                   # Root component
+├── main.ts                   # App entry point
+├── shims-vue.d.ts            # Vue type declarations for TypeScript
+├── assets/                   # Global styles and static assets
+│   └── animation.css
+│   └── base.css
+│   └── main.css
+│   └── css/
+│   └── material/                 # default library
+│ 
+├── components/               # Reusable UI components
+│   └── DirectoryUploadBlock_Simplified.vue
+│   └── Header.vue
+│   └── HeaderNav.vue
+│   └── ImageSourceSelector.vue
+│   └── MosaicGenerateButton.vue
+│   └── MosaicResultDisplay.vue
+│   └── PageStepper.vue
+│   └── ParallaxContainer.vue
+│   └── PredefinedThemeModal.vue
+│   └── SplitLayoutSection.vue
+│   └── StyleImageUploader.vue
+│   └── Typewriter.vue
+│ 
+├── views/                    # Page-level components
+│   ├── HomeView.vue
+│   ├── OpenApiViewer.vue
+│   └── UseNowView.vue
 ```
 
 ## Backend
