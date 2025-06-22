@@ -33,11 +33,7 @@ public class StorageService {
 //        this.imageProcessingService = imageProcessingService;
 //    }
 
-    private final String FOLDER_PATH = "/Users/harris/uploads/";
-
-
-
-
+    
 
 //    /**
 //     * upload an image to the database
