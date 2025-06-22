@@ -5,6 +5,7 @@ import com.blurnest.imageuploader.model.image.engine.mosaicUtils.*;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MosaicModelEngine {
@@ -17,13 +18,13 @@ public class MosaicModelEngine {
 
     /* ─── builder ──────────────────────────────────────────────── */
     public static class Builder {
-        private int tileWidth  = 10;
+        private int tileWidth = 10;
         private int tileHeight = 10;
-        private File workDir   = new File("/tmp");
+        private File workDir = new File("/tmp");
         private boolean userChooseBlur = false;
 
         public Builder tileSize(int w, int h) {
-            this.tileWidth  = w;
+            this.tileWidth = w;
             this.tileHeight = h;
             return this;
         }
@@ -42,17 +43,21 @@ public class MosaicModelEngine {
             return new MosaicModelEngine(tileWidth, tileHeight, workDir, userChooseBlur);
         }
     }
-    public static Builder builder() { return new Builder(); }
+
+    public static Builder builder() {
+        return new Builder();
+    }
 
     /* ─── ctor (private) ───────────────────────────────────────── */
     private MosaicModelEngine(int tw, int th, File dir, boolean userChooseBlur) {
-        this.tileWidth  = tw;
+        this.tileWidth = tw;
         this.tileHeight = th;
-        this.workDir    = dir;
+        this.workDir = dir;
         this.userChooseBlur = userChooseBlur;
     }
 
     /* ─── public API ───────────────────────────────────────────── */
+
     /**
      * @param inputs raw bytes of an uploaded image
      * @return mosaic as JPG bytes
@@ -63,13 +68,6 @@ public class MosaicModelEngine {
         BufferedImage targetImage = ImageIO.read(new ByteArrayInputStream(inputs[0]));
         if (targetImage == null) throw new IllegalArgumentException("Base image is invalid or unsupported format.");
 
-        //images library
-//        List<BufferedImage> tileImages = new ArrayList<>();
-//        for (int i = 1; i < inputs.length; i++) {
-//            BufferedImage tile = ImageIO.read(new ByteArrayInputStream(inputs[i]));
-//            if (tile == null) continue; // skip corrupt tiles
-//            tileImages.add(tile);
-//        }
         List<BufferedImage> tileImages = ImageLoader.loadImagesFromFolder("compressed_tile");
         /* ---- start PREPROCESSING as BufferedImage ---- */
         // split target into tiles
@@ -81,29 +79,30 @@ public class MosaicModelEngine {
         System.out.println("Matched " + matchedTiles.size() + " tiles.");
 
         //  build mosaic
-        int cols = targetImage.getWidth()  / tileWidth;
+        int cols = targetImage.getWidth() / tileWidth;
         int rows = targetImage.getHeight() / tileHeight;
         BufferedImage mosaic = MosaicBuilder.buildMosaic(
                 matchedTiles, cols, rows, tileWidth, tileHeight, userChooseBlur
         );
-        /* ---- return as JPG bytes ---- */
         /* ---- finish PREPROCESSING as BufferedImage ---- */
 
         //return as bytes
         return ImageConverter.bufferedImageToBytes(mosaic, "jpg");
     }
 
-    //test
-    public byte[] preprocess_(byte[] input) throws Exception {
-        //hardcoed test one image
-        String targetPath = "/tmp/target_resized.jpg";
-        BufferedImage targetImage = ImageLoader.loadImage(targetPath);
+    public byte[] preprocess_test(byte[][] inputs) throws Exception {
 
-        // read input bytes into BufferedImage
-        //BufferedImage targetImage = ImageConverter.bytesToBufferedImage(input);
+        //base image
+        BufferedImage targetImage = ImageIO.read(new ByteArrayInputStream(inputs[0]));
+        if (targetImage == null) throw new IllegalArgumentException("Base image is invalid or unsupported format.");
 
-        File tileFolder = new File(workDir, "input/compressed_tile");
-        List<BufferedImage> tileImages = ImageLoader.loadImagesFromFolder(tileFolder.getPath());
+        //images library
+        List<BufferedImage> tileImages = new ArrayList<>();
+        for (int i = 1; i < inputs.length; i++) {
+            BufferedImage tile = ImageIO.read(new ByteArrayInputStream(inputs[i]));
+            if (tile == null) continue; // skip corrupt tiles
+            tileImages.add(tile);
+        }
 
         /* ---- start PREPROCESSING as BufferedImage ---- */
         // split target into tiles
@@ -115,20 +114,13 @@ public class MosaicModelEngine {
         System.out.println("Matched " + matchedTiles.size() + " tiles.");
 
         //  build mosaic
-        int cols = targetImage.getWidth()  / tileWidth;
+        int cols = targetImage.getWidth() / tileWidth;
         int rows = targetImage.getHeight() / tileHeight;
         BufferedImage mosaic = MosaicBuilder.buildMosaic(
                 matchedTiles, cols, rows, tileWidth, tileHeight, userChooseBlur
         );
-        /* ---- return as JPG bytes ---- */
+
         /* ---- finish PREPROCESSING as BufferedImage ---- */
-        // Save mosaic image
-        try {
-            System.out.println("output image");
-            ImageIO.write(mosaic, "jpg", new File("/tmp/output.jpg"));
-        } catch (IOException e) {
-            System.err.println("Failed to save mosaic: " + e.getMessage());
-        }
 
         //return as bytes
         return ImageConverter.bufferedImageToBytes(mosaic, "jpg");

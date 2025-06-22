@@ -33,7 +33,7 @@
         <span v-else-if="sourceMode === 'upload'">檢查檔案中...</span>
         <span v-else-if="showPredefinedModal">開啟主題選擇...</span>
       </div>
-      
+
       <div v-if="!isLoadingCurrentAction && currentActionInfoMessage" class="info-message">
         {{ currentActionInfoMessage }}
       </div>
@@ -54,9 +54,9 @@
           <span class="source-name">
             {{ source.name }} ({{ source.files.length }} 張)
           </span>
-          <button 
-            @click="removeSource(source.id)" 
-            class="remove-source-button" 
+          <button
+            @click="removeSource(source.id)"
+            class="remove-source-button"
             title="移除此素材集"
             :disabled="isLoadingCurrentAction"
           >
@@ -64,9 +64,9 @@
           </button>
         </li>
       </ul>
-      <button 
-        v-if="selectedSources.length > 0" 
-        @click="clearAllSources" 
+      <button
+        v-if="selectedSources.length > 0"
+        @click="clearAllSources"
         class="clear-all-button"
         :disabled="isLoadingCurrentAction"
       >
@@ -136,7 +136,7 @@ const showPredefinedModal = ref(false);
 const predefinedThemes = ref<PredefinedTheme[]>([]);
 const predefinedThemesInitialized = ref(false); // 追蹤主題是否已初始化完成
 
-const isLoadingCurrentAction = ref(false); 
+const isLoadingCurrentAction = ref(false);
 const currentActionInfoMessage = ref<string | null>(null);
 const currentActionErrorMessage = ref<string | null>(null);
 
@@ -172,7 +172,7 @@ const fetchPredefinedThemes = async () => {
     for (const path in imageModules) {
       const pathParts = path.split('/');
       const fileNameWithExtension = pathParts.pop()!;
-      const themeFolderName = pathParts.pop()!; 
+      const themeFolderName = pathParts.pop()!;
       const formattedThemeName = themeFolderName.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
       if (!themesMap[themeFolderName]) {
         themesMap[themeFolderName] = { name: formattedThemeName, path: themeFolderName, images: [] };
@@ -183,7 +183,7 @@ const fetchPredefinedThemes = async () => {
     if (predefinedThemes.value.length === 0) {
         currentActionInfoMessage.value = "未找到可用的預設主題。";
     } else {
-        currentActionInfoMessage.value = null; 
+        currentActionInfoMessage.value = null;
     }
   } catch (error) {
     console.error("掃描預設主題時發生錯誤:", error);
@@ -229,7 +229,7 @@ const addSourceToList = (newSource: SelectedSource) => {
   if (existingSourceByNameAndType) {
     currentActionErrorMessage.value = `素材集 "${newSource.name}" (${newSource.type === 'upload' ? '本機資料夾' : '主題'}) 已存在。如需更新，請先移除舊版本。`;
     emit('source-error', currentActionErrorMessage.value); // 也通知父組件
-    return; 
+    return;
   }
 
   selectedSources.value.push(newSource);
@@ -247,17 +247,17 @@ const handleUserUploadedFilesFromComponent = (files: File[]) => {
         currentActionErrorMessage.value = "選擇的資料夾中沒有有效的圖片。";
     }
     emit('source-error', currentActionErrorMessage.value);
-    return; 
+    return;
   }
-  
-  let folderName = "上傳的資料夾"; 
+
+  let folderName = "上傳的資料夾";
   if (files[0]?.webkitRelativePath) {
     const pathParts = files[0].webkitRelativePath.split('/');
     if (pathParts.length > 0 && pathParts[0]) { // 確保 pathParts[0] 不是空字串
       folderName = pathParts[0];
     }
   }
-  
+
   const sourceId = `upload-${folderName.replace(/\s+/g, '_')}-${Date.now()}`;
 
   addSourceToList({
@@ -296,9 +296,9 @@ const handlePredefinedThemeSelected = async (theme: PredefinedTheme) => {
       try {
         const imageUrl = await img.urlLoader();
         const response = await fetch(imageUrl);
-        if (!response.ok) { 
-            console.warn(`無法載入圖片 ${img.name} 從 ${theme.name}: ${response.statusText}`); 
-            continue; 
+        if (!response.ok) {
+            console.warn(`無法載入圖片 ${img.name} 從 ${theme.name}: ${response.statusText}`);
+            continue;
         }
         const blob = await response.blob();
         if (blob.size === 0) {
@@ -346,7 +346,7 @@ const removeSource = (sourceId: string) => {
   selectedSources.value = selectedSources.value.filter(s => s.id !== sourceId);
   if (sourceToRemove) {
       currentActionInfoMessage.value = `已移除素材集 "${sourceToRemove.name}"。`;
-      currentActionErrorMessage.value = null; 
+      currentActionErrorMessage.value = null;
   }
   emitAllSelectedFiles();
 };
@@ -364,16 +364,16 @@ const emitAllSelectedFiles = () => {
     acc.push(...source.files);
     return acc;
   }, [] as File[]);
-  
+
   emit('files-selected', allFiles);
-  
+
   // 更新父組件的整體錯誤狀態
   if (allFiles.length > 0) {
     emit('source-error', null); // 有文件，清除整體錯誤
   } else if (selectedSources.value.length === 0 && !currentActionErrorMessage.value) {
     // 如果列表為空，且沒有進行中的單項錯誤，也清除整體錯誤
     // 但父組件可能需要根據 allFiles.length === 0 來禁用生成按鈕
-    emit('source-error', null); 
+    emit('source-error', null);
   } else if (currentActionErrorMessage.value) {
     // 如果有當前操作錯誤，則優先傳播此錯誤
     emit('source-error', currentActionErrorMessage.value);
@@ -386,7 +386,7 @@ const emitAllSelectedFiles = () => {
 const mainButtonTextComputed = computed(() => {
   if (sourceMode.value === 'upload') {
     return '新增本機資料夾';
-  } else { 
+  } else {
     return '從主題集新增';
   }
 });
@@ -498,7 +498,7 @@ watch(selectedSources, (newVal, oldVal) => {
   padding: 12px 25px;
   font-size: 1.1rem;
   color: white;
-  background-color: #4A5568; 
+  background-color: #4A5568;
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -508,7 +508,7 @@ watch(selectedSources, (newVal, oldVal) => {
   position: relative; // For spinner
 
   &:hover:not(:disabled) {
-    background-color: #2D3748; 
+    background-color: #2D3748;
     transform: translateY(-1px);
   }
   &:active:not(:disabled) {

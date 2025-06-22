@@ -29,7 +29,7 @@ public class MosaicProcessor implements ImageProcessor{
     public byte[] process(byte[][] in) {
         System.out.println("process mosaic photo");
         try {
-            return engine.preprocess(in);
+            return engine.preprocess_test(in);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -37,7 +37,7 @@ public class MosaicProcessor implements ImageProcessor{
 
     // test
 //    @Override
-//    public byte[] process(byte[] in) {
+//    public byte[] process_test(byte[] in) {
 //        System.out.println("process mosaic photo");
         //testing:
 //        try {
