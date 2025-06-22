@@ -10,7 +10,7 @@ src/image_conversion_micro_service/frontend/src
 │   └── main.css
 │   └── css/
 │   └── material/                 # default library
-
+│ 
 ├── components/               # Reusable UI components
 │   └── DirectoryUploadBlock_Simplified.vue
 │   └── Header.vue
@@ -24,7 +24,7 @@ src/image_conversion_micro_service/frontend/src
 │   └── SplitLayoutSection.vue
 │   └── StyleImageUploader.vue
 │   └── Typewriter.vue
-
+│ 
 ├── views/                    # Page-level components
 │   ├── HomeView.vue
 │   ├── OpenApiViewer.vue
