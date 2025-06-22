@@ -12,7 +12,7 @@
       <!-- 網站 Logo 圖片 -->
       <img src="../assets/image/logo.png" alt="網站 Logo" class="logo-img" />
       <!-- 網站標題文本 -->
-      <h1 class="logo-text">mosaic</h1>
+      <h1 class="logo-text">BlurNest</h1>
     </div>
 
     <!-- 
@@ -71,7 +71,6 @@ import { useRouter } from 'vue-router'; // 引入 Vue Router 的 useRouter
 const navigationItems = ref([
   { name: 'Guide', path: '/' },
   { name: 'Use now', path: '/usenow' },
-  { name: 'NFT', path: '/hot-songs' }, // 假設 '/hot-songs' 是 NFT 相關的路徑
 ]);
 
 /**

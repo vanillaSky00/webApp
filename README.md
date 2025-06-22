@@ -48,15 +48,22 @@ src/main/java/com/blurnest/imageuploader/
 │   └── processor/
 │       └── ImageProcessor.java
 │       └── MosaicProcessor.java
+<<<<<<< HEAD
 ├── repository/              --> Domain objects and image processing utilities
+=======
+├── repository/              
+>>>>>>> 9f5b235e3ad28d9a03775ebbe1f6c99767662787
 │   └── FileDataRepository.java
 │   └── StorageRepository.java
 │ 
 └── ImageUploaderApplication.java
+<<<<<<< HEAD
 
 src/main/resources/
 ├── static/                  --> Exposed static files (e.g., processed images)
 ├── templates/               --> V in MVC (Thymeleaf views)
 │   └── uploadForm.html
 └── application.properties
+=======
+>>>>>>> 9f5b235e3ad28d9a03775ebbe1f6c99767662787
 ```

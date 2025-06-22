@@ -1,7 +1,5 @@
 <template>
   <div class="home-view">
-    <!-- 背景層 (可選) -->
-    <!-- <div class="fixed-background"></div> -->
 
     <!-- 視差容器 -->
     <ParallaxContainer

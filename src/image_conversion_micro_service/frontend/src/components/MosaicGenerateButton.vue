@@ -6,7 +6,7 @@
     class="generate-button"
   >
     <slot>
-      {{ busy ? '生成中...' : '開始生成馬賽克' }}
+      {{ busy ? '生成中...' : '開始生成拼貼畫' }}
     </slot>
   </button>
 </template>
@@ -131,7 +131,7 @@ async function handleGenerate() {
   } catch (err: any) {
     // ... (錯誤處理邏輯保持不變) ...
     console.error('[MosaicGenerateButton] Error:', err);
-    let errorMessage = '生成馬賽克時發生未知錯誤。';
+    let errorMessage = '生成拼貼畫時發生未知錯誤。';
     if (axios.isAxiosError(err)) {
       if (err.response) {
         const errorData = err.response.data as BackendErrorResponse | { message?: string };

@@ -1,54 +1,57 @@
 <template>
   <div class="use-now-page">
-    <h1 class="page-title">製作屬於你的照片拼貼畫</h1>
-    <p class="page-subtitle">將你的照片集變成獨一無二的藝術品！</p>
+    <!-- 原本的標題和副標題 -->
+    <h1 class="page-title main-header-title">製作你的照片拼貼畫</h1>
+    <p class="page-subtitle main-header-subtitle">將你的照片集變成獨一無二的藝術品！</p>
 
-    <section class="upload-section">
+    <!-- 新增的步驟導航元件 -->
+    <PageStepper @navigate="scrollToSection" />
+
+    <!-- 步驟 1 區塊 (風格圖片) -->
+    <section class="upload-section" id="style-image-section">
       <StyleImageUploader v-model="styleImageFile" @update:model-value="onFileSelectionChange" />
     </section>
 
-    <section class="upload-section">
-      <h2 class="section-title">步驟 2：上傳你的素材圖片資料夾</h2>
-      <p class="section-description">
-        選擇一個包含多張小圖片的資料夾，這些圖將拼貼出你照片。
-      </p>
-      <DirectoryUploadBlock_Simplified @files-selected="handleFolderFilesSelected" />
+    <!-- 步驟 2 區塊 (素材圖片) -->
+    <section class="upload-section" id="source-images-section">
+      <ImageSourceSelector 
+        @files-selected="handleFolderFilesSelected"
+        @source-error="handleSourceSelectorError" 
+      />
     </section>
 
-    <!-- 使用 MosaicGenerateButton 組件 -->
-    <MosaicGenerateButton
-      :style-image="styleImageFile"
-      :source-images="folderImageFiles"
-      :api-url="backendConfig.baseUrl"
-      :operation="backendConfig.mosaicOperation"
-      :disabled="!canGenerate || isGenerating"
-      @success="handleGenerationSuccess"
-      @error="handleGenerationError"
-      @progress="updateGenerationProgress"
-      @busy-change="handleBusyChange"
-    >
-      <!-- 按鈕文本根據 isGenerating 動態變化 (通過 slot 傳入) -->
-      {{ isGenerating ? '生成中...' : '開始打造圖像拼貼' }}
-    </MosaicGenerateButton>
+    <!-- 步驟 3 區塊 (生成按鈕和結果) -->
+    <div id="generation-section">
+      <MosaicGenerateButton
+        :style-image="styleImageFile"
+        :source-images="folderImageFiles"
+        :api-url="backendConfig.baseUrl"
+        :operation="backendConfig.mosaicOperation"
+        :disabled="!canGenerate || isGenerating"
+        @success="handleGenerationSuccess"
+        @error="handleGenerationError"
+        @progress="updateGenerationProgress"
+        @busy-change="handleBusyChange"
+      >
+        {{ isGenerating ? '生成中...' : '開始生成拼貼畫' }}
+      </MosaicGenerateButton>
 
-    <!-- 進度條區域 -->
-    <div v-if="isGenerating" class="progress-area">
-      <p>圖片正在努力生成中，請稍候...</p>
-      <div class="progress-bar-container">
-        <div class="progress-bar" :style="{ width: generationProgress + '%' }">
-          {{ generationProgress }}%
+      <div v-if="isGenerating" class="progress-area">
+        <p>{{ generationProgress < 100 ? '圖片正在努力生成中，請稍候...' : '正在處理圖片，準備顯示...' }}</p>
+        <div class="progress-bar-container">
+          <div class="progress-bar" :style="{ width: generationProgress + '%' }">
+            {{ generationProgress }}%
+          </div>
         </div>
       </div>
+
+      <MosaicResultDisplay
+        v-if="finalImageUrl && !isGenerating"
+        :image-url="finalImageUrl"
+        :download-file-name="downloadFileName"
+      />
     </div>
 
-    <!-- 最終圖片展示區域 -->
-    <MosaicResultDisplay
-      v-if="finalImageUrl && !isGenerating"
-      :image-url="finalImageUrl"
-      :download-file-name="downloadFileName"
-    />
-
-    <!-- 錯誤信息顯示區域 -->
     <div v-if="errorMessage" class="error-message">
       錯誤：{{ errorMessage }}
     </div>
@@ -57,15 +60,16 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import DirectoryUploadBlock_Simplified from '../components/DirectoryUploadBlock_Simplified.vue';
+import ImageSourceSelector from '../components/ImageSourceSelector.vue';
 import StyleImageUploader from '../components/StyleImageUploader.vue';
 import MosaicResultDisplay from '../components/MosaicResultDisplay.vue';
 import MosaicGenerateButton from '../components/MosaicGenerateButton.vue';
+import PageStepper from '../components/PageStepper.vue';
 
 const styleImageFile = ref<File | null>(null);
 const folderImageFiles = ref<File[]>([]);
 
-const isGenerating = ref(false); // 控制整體生成狀態，影響UI如進度條、按鈕文本
+const isGenerating = ref(false);
 const generationProgress = ref(0);
 const finalImageUrl = ref<string | null>(null);
 const errorMessage = ref<string | null>(null);
@@ -75,7 +79,6 @@ const backendConfig = {
   mosaicOperation: 'mosaic'
 };
 
-// 計算屬性，用於判斷是否滿足生成條件
 const canGenerate = computed(() => {
   return styleImageFile.value !== null && folderImageFiles.value.length > 0;
 });
@@ -85,86 +88,146 @@ const downloadFileName = computed(() => {
   return `${prefix}_photomosaic_${Date.now()}.png`;
 });
 
-// 當文件選擇變化時，清除舊的結果和錯誤
 const onFileSelectionChange = () => {
-  finalImageUrl.value = null;
-  errorMessage.value = null;
-  generationProgress.value = 0; // 重置進度
-  if (isGenerating.value) { // 如果正在生成時用戶更改了文件，理論上應該取消之前的操作，這裡簡化處理
-      isGenerating.value = false;
+  if (finalImageUrl.value) {
+    // 如果之前有 Blob URL，將其釋放以避免記憶體洩漏
+    URL.revokeObjectURL(finalImageUrl.value);
+    finalImageUrl.value = null;
+  }
+  generationProgress.value = 0;
+  if (errorMessage.value && !errorMessage.value.startsWith('素材選擇錯誤:')) {
+     errorMessage.value = null;
+  }
+  if (isGenerating.value) {
+    isGenerating.value = false;
   }
 };
 
 const handleFolderFilesSelected = (files: File[]) => {
   folderImageFiles.value = files;
-  if (files.length > 0) {
-    onFileSelectionChange(); // 調用通用清理邏輯
+  if (errorMessage.value && errorMessage.value.startsWith('素材選擇錯誤:')) {
+      errorMessage.value = null;
   }
+  onFileSelectionChange(); // 這裡會重置圖片相關狀態
 };
 
-// 由 MosaicGenerateButton 的 @busy-change 事件觸發
+const handleSourceSelectorError = (message: string | null) => {
+    if (message) {
+        errorMessage.value = `素材選擇錯誤: ${message}`;
+        folderImageFiles.value = [];
+    } else {
+        if (errorMessage.value && errorMessage.value.startsWith('素材選擇錯誤:')) {
+            errorMessage.value = null;
+        }
+    }
+};
+
 function handleBusyChange(isChildBusy: boolean) {
-  // isGenerating 也應該反映子組件的忙碌狀態
-  // 但要注意，子組件完成後 isChildBusy 會變 false，此時 isGenerating 應該等 progress 到 100 或出錯
-  // 這裡的 isGenerating 主要用於控制進度條顯示和按鈕文本
   if (isChildBusy) {
-      isGenerating.value = true; // 子組件開始忙碌，父組件也進入生成狀態
-      finalImageUrl.value = null; // 清除上一次的結果
-      errorMessage.value = null; // 清除上一次的錯誤
+    isGenerating.value = true;
+    if (finalImageUrl.value) {
+        URL.revokeObjectURL(finalImageUrl.value);
+        finalImageUrl.value = null;
+    }
+    if (errorMessage.value && !errorMessage.value.startsWith('素材選擇錯誤:')) {
+        errorMessage.value = null;
+    }
   }
-  // isGenerating 變為 false 的邏輯主要在 success 和 error 處理器中
 }
 
-function handleGenerationSuccess(payload: { imageUrl: string; message?: string }) {
-  console.log('Generation successful:', payload.imageUrl);
-  finalImageUrl.value = payload.imageUrl;
-  errorMessage.value = null;
-  // isGenerating.value = false; // 將在 progress = 100 時或由 busy-change 的 false 觸發
-  // generationProgress.value = 100; // 已由 progress 事件處理
-  if (payload.message) console.log('Backend message:', payload.message);
+// --- 主要修改點 ---
+async function handleGenerationSuccess(payload: { imageUrl: string; message?: string }) {
+  console.log('後端成功回傳，原始圖片 URL:', payload.imageUrl);
+  if (payload.message) console.log('後端訊息:', payload.message);
+
+  // 雖然進度條已到 100，但前端仍需下載和處理圖片，所以保持 isGenerating 狀態
+  // isGenerating.value 保持為 true
+
+  try {
+    // 1. 使用 fetch 請求後端提供的圖片 URL
+    const response = await fetch(payload.imageUrl);
+    
+    if (!response.ok) {
+      throw new Error(`無法從伺服器獲取圖片資料，狀態: ${response.status} ${response.statusText}`);
+    }
+
+    // 2. 將回應轉換成一個 Blob (Binary Large Object)
+    const imageBlob = await response.blob();
+
+    // 3. 為這個 Blob 物件創建一個在瀏覽器內存中唯一的、臨時的 URL
+    const blobUrl = URL.createObjectURL(imageBlob);
+
+    // 4. 將這個絕對有效的 blobUrl 用於顯示和下載
+    finalImageUrl.value = blobUrl;
+    errorMessage.value = null; // 清除之前的任何錯誤
+
+    // 當 Vue 元件卸載時，自動釋放 Blob URL 以節省記憶體
+    // 這部分可以放在 onUnmounted 鉤子中，但對於單頁應用，
+    // 在下次生成或選擇新檔案時釋放更為實際 (已在 onFileSelectionChange 中實現)
+
+  } catch (error: any) {
+    console.error('在前端處理和獲取圖片時發生錯誤:', error);
+    handleGenerationError(`無法處理生成的圖片: ${error.message}`);
+  } finally {
+    // 處理完畢，無論成功或失敗，都結束 isGenerating 狀態
+    isGenerating.value = false;
+    // 將進度條重置，以便下次使用
+    generationProgress.value = 0;
+  }
 }
 
 function handleGenerationError(message: string) {
-  console.error('Generation error:', message);
+  console.error('生成過程中發生錯誤:', message);
   errorMessage.value = message;
-  finalImageUrl.value = null;
-  isGenerating.value = false; // 出錯時，明確結束生成狀態
+  if (finalImageUrl.value) {
+    URL.revokeObjectURL(finalImageUrl.value);
+    finalImageUrl.value = null;
+  }
+  isGenerating.value = false;
   generationProgress.value = 0;
 }
 
 function updateGenerationProgress(progress: number) {
   generationProgress.value = progress;
   if (progress > 0 && progress < 100) {
-    if (!isGenerating.value) isGenerating.value = true; // 確保進度條可見
-  } else if (progress === 100 && !errorMessage.value) { // 成功完成
-    // 延遲一點設置 isGenerating = false，讓進度條動畫播完
-    setTimeout(() => {
-        if (generationProgress.value === 100 && !errorMessage.value) { // 再次檢查，防止狀態競爭
-             isGenerating.value = false;
-        }
-    }, 400); // 略長於進度條的 transition duration
-  } else if (progress === 0 && !isGenerating.value && !errorMessage.value) {
-    // 初始狀態或重置
+    if (!isGenerating.value) isGenerating.value = true;
   }
-  // isGenerating 在出錯時由 handleGenerationError 設置為 false
+  // 移除舊的基於 setTimeout 的邏輯，因為現在由 handleGenerationSuccess 來控制結束狀態
 }
 
+// 滾動到指定區塊的方法
+const scrollToSection = (sectionId: string) => {
+  const element = document.getElementById(sectionId);
+  if (element) {
+    const offset = 90; 
+    const bodyRect = document.body.getBoundingClientRect().top;
+    const elementRect = element.getBoundingClientRect().top;
+    const elementPosition = elementRect - bodyRect;
+    const offsetPosition = elementPosition - offset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    });
+  } else {
+    console.warn(`Section with ID "${sectionId}" not found.`);
+  }
+};
 </script>
 
 <style scoped lang="scss">
-/* 樣式與之前版本保持一致，不需要修改 */
 .use-now-page {
   max-width: 800px;
   margin: 20px auto;
   padding: 20px;
-  padding-top: 90px;
+  padding-top: 30px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   background-color: #fdfdfd;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
-.page-title {
+.main-header-title {
   text-align: center;
   font-size: 2.4rem;
   color: #2c3e50;
@@ -172,11 +235,11 @@ function updateGenerationProgress(progress: number) {
   font-weight: 600;
 }
 
-.page-subtitle {
+.main-header-subtitle {
   text-align: center;
   font-size: 1.15rem;
   color: #555;
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem;
 }
 
 .upload-section {
@@ -188,21 +251,8 @@ function updateGenerationProgress(progress: number) {
   box-shadow: 0 2px 6px rgba(0,0,0,0.04);
 }
 
-.upload-section > .section-title {
-  font-size: 1.6rem;
-  color: #34495e;
-  margin-top: 0;
-  margin-bottom: 1rem;
-  border-bottom: 2px solid #ecf0f1;
-  padding-bottom: 0.75rem;
-  font-weight: 500;
-}
-
-.upload-section > .section-description {
-  font-size: 1rem;
-  color: #606060;
-  line-height: 1.7;
-  margin-bottom: 1.8rem;
+#generation-section {
+  margin-bottom: 2rem;
 }
 
 .progress-area {
